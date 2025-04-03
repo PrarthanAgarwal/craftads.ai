@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* white */
+    --foreground: 240 10% 3.9%; /* dark gray for text */
+    --card: 0 0% 100%; /* white */
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    /* Primary color: #27548A converted to HSL */
+    --primary: 212 56% 34%;
+    --primary-foreground: 0 0% 100%; /* white text on primary */
+    
+    /* Secondary color: light version of primary with 15% opacity */
+    --secondary: 212 56% 95%;
+    --secondary-foreground: 240 5.9% 10%;
+    
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 212 56% 90%;
+    --accent-foreground: 212 56% 25%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 212 56% 34%; /* Same as primary */
+    
+    /* Background color changed from #F5F5F7 to white */
+    --app-background: 0 0% 100%;
+    
+    /* Shadow */
+    --card-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+    
+    /* Border radius */
+    --radius: 0.5rem;
+    
+    /* Spacing */
+    --spacing-standard: 1rem; /* 16px */
+    --spacing-section: 1.5rem; /* 24px */
+    --card-padding: 1.5rem; /* 24px */
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    
+    /* Primary color remains the same in dark mode */
+    --primary: 212 56% 34%;
+    --primary-foreground: 0 0% 98%; /* light text on primary in dark mode */
+    
+    --secondary: 212 56% 20%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 212 56% 25%;
+    --accent-foreground: 212 56% 90%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 212 56% 34%;
+    
+    --app-background: 240 10% 7%;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-app-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600; /* Semi-Bold for headings */
+  }
+  
+  h1 { @apply text-3xl md:text-4xl; }
+  h2 { @apply text-2xl md:text-3xl; }
+  h3 { @apply text-xl md:text-2xl; }
+  h4 { @apply text-lg md:text-xl; }
+  
+  .subheading {
+    font-weight: 500; /* Medium for subheadings */
+  }
+  
+  .caption, small {
+    font-weight: 300; /* Light for captions */
+    @apply text-sm text-muted-foreground;
+  }
+
+  /* Make all images have rounded corners by default */
+  img {
+    @apply rounded-lg;
+  }
+  
+  /* Card styling with shadow */
+  .card {
+    @apply bg-card rounded-lg p-6;
+    box-shadow: var(--card-shadow);
+  }
+  
+  /* Button styling */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground rounded-lg px-4 py-2 hover:opacity-90 transition-opacity;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground rounded-lg px-4 py-2 hover:opacity-90 transition-opacity;
+  }
+}

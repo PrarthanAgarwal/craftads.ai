@@ -1,0 +1,7 @@
+1. Optimize authentication flow:
+    - Consider moving the session check to a client-side action after the initial page renders
+    - Implement a loading state while authentication is being verified
+
+2. A production build:
+    - Run npm run build followed by npm run start to see how the site performs in production mode
+    - This will give you a more accurate assessment of actual load times

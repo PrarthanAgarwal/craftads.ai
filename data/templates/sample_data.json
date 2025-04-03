@@ -1,0 +1,93 @@
+{
+  "categories": [
+    {
+      "name": "E-commerce",
+      "description": "Templates optimized for online stores and product advertisements",
+      "icon_name": "shopping-cart",
+      "color": "#4f46e5"
+    },
+    {
+      "name": "Fashion",
+      "description": "Elegant templates for fashion brands and clothing",
+      "icon_name": "shirt",
+      "color": "#d946ef",
+      "parent": "e-commerce"
+    },
+    {
+      "name": "Electronics",
+      "description": "Modern templates for tech and electronic products",
+      "icon_name": "cpu",
+      "color": "#0ea5e9",
+      "parent": "e-commerce"
+    },
+    {
+      "name": "Food & Beverage",
+      "description": "Appetizing templates for food products and restaurants",
+      "icon_name": "utensils",
+      "color": "#f59e0b"
+    },
+    {
+      "name": "Health & Beauty",
+      "description": "Clean templates for wellness, beauty, and healthcare products",
+      "icon_name": "heart-pulse",
+      "color": "#10b981"
+    }
+  ],
+  "templates": [
+    {
+      "title": "Modern Product Showcase",
+      "description": "A clean, modern template with focus on product details",
+      "preview_image_url": "https://images.unsplash.com/photo-1556742031-c6961e8560b0?q=80&w=1000",
+      "width": 1080,
+      "height": 1080,
+      "is_premium": false,
+      "is_featured": true,
+      "categories": ["e-commerce"],
+      "tags": ["clean", "minimal", "product", "white"]
+    },
+    {
+      "title": "Fashion Collection Grid",
+      "description": "Display multiple fashion items in an elegant grid layout",
+      "preview_image_url": "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=1000",
+      "width": 1080,
+      "height": 1080,
+      "is_premium": true,
+      "is_featured": true,
+      "categories": ["fashion", "e-commerce"],
+      "tags": ["fashion", "grid", "collection", "elegant"]
+    },
+    {
+      "title": "Tech Features Highlight",
+      "description": "Showcase technical features of electronic products",
+      "preview_image_url": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1000",
+      "width": 1080,
+      "height": 1920,
+      "is_premium": true,
+      "is_featured": false,
+      "categories": ["electronics", "e-commerce"],
+      "tags": ["tech", "features", "dark", "modern"]
+    },
+    {
+      "title": "Gourmet Food Presentation",
+      "description": "Elegant layout for showcasing food products and ingredients",
+      "preview_image_url": "https://images.unsplash.com/photo-1495195134817-aeb325a55b65?q=80&w=1000",
+      "width": 1080,
+      "height": 1350,
+      "is_premium": false,
+      "is_featured": true,
+      "categories": ["food-beverage"],
+      "tags": ["food", "gourmet", "ingredients", "elegant"]
+    },
+    {
+      "title": "Beauty Product Focus",
+      "description": "Clean minimal layout highlighting beauty product details",
+      "preview_image_url": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=1000",
+      "width": 1080,
+      "height": 1080,
+      "is_premium": true,
+      "is_featured": false,
+      "categories": ["health-beauty"],
+      "tags": ["beauty", "minimal", "clean", "product"]
+    }
+  ]
+} 
