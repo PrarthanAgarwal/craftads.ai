@@ -1,0 +1,9 @@
+✅ The header is different on all pages.
+✅ The filter gets activated on searching.
+✅ The filter gets applied directly on click and doesn't wait for apply.
+
+create and apply payments page
+create logo
+
+scrape and label images better
+✅ Fix import via pinterest functionality

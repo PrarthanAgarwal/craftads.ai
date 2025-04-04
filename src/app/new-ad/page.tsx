@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, FormEvent, ChangeEvent, DragEvent } from "react";
 import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import ServerGalleryHeader from "@/components/gallery/ServerGalleryHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Upload, X, ImageIcon, Link as LinkIcon, Loader2 } from "lucide-react";
@@ -212,7 +212,7 @@ export default function NewAdPage() {
     }
   };
 
-  const handlePinterestSubmit = (e: FormEvent) => {
+  const handlePinterestSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     if (!pinterestUrl) {
@@ -228,14 +228,36 @@ export default function NewAdPage() {
     setIsPinterestLoading(true);
     setPinterestError("");
 
-    // In a real implementation, you would fetch the image from the Pinterest URL
-    // For this demo, we'll simulate a successful fetch after a brief delay
-    setTimeout(() => {
+    try {
+      // Call our Pinterest extract API
+      const response = await fetch('/api/pinterest/extract', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: pinterestUrl }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to extract image from Pinterest URL');
+      }
+
+      // Set the extracted image URL
       setUploadedFile(null);
-      // Set a sample image from Pinterest (in a real app, this would be fetched from the URL)
-      setPreviewUrl("https://i.pinimg.com/564x/87/f5/9b/87f59b6a75b5649b7ec0de048a3389e2.jpg");
+      setPreviewUrl(data.data.imageUrl);
+      
+      toast({
+        title: "Pinterest Image Imported",
+        description: "The image has been successfully imported from Pinterest.",
+      });
+    } catch (error) {
+      console.error('Pinterest import error:', error);
+      setPinterestError(error instanceof Error ? error.message : 'Failed to import Pinterest image');
+    } finally {
       setIsPinterestLoading(false);
-    }, 1500);
+    }
   };
 
   const handleGenerate = async () => {
@@ -329,7 +351,7 @@ export default function NewAdPage() {
     <main className="min-h-screen bg-app-background">
       <Sidebar />
       <div className={`${isMobile ? '' : 'ml-[240px]'}`}>
-        <Header />
+        <ServerGalleryHeader />
         <div className="pt-[70px] px-6 md:px-8">
           {/* Improved header with title and cost on same line */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 py-6">

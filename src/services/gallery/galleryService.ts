@@ -34,7 +34,7 @@ export type SearchTemplateResult = {
 
 export type TemplateSearchParams = {
   query?: string;
-  category?: string;
+  category?: string | string[];
   limit?: number;
   offset?: number;
   isPremium?: boolean;
@@ -96,11 +96,20 @@ export class GalleryService {
       isFeatured
     } = params;
 
+    // Handle multiple categories - just use the first one for search_templates function
+    // This is a limitation of the stored procedure, but we will filter properly below
+    let categorySlug = null;
+    if (typeof category === 'string') {
+      categorySlug = category;
+    } else if (Array.isArray(category) && category.length > 0) {
+      categorySlug = category[0]; // Use the first category for the initial filter
+    }
+
     // Call the stored procedure for base search
     let { data, error } = await supabase
       .rpc('search_templates', {
         search_query: query,
-        category_slug: category,
+        category_slug: categorySlug,
         limit_count: limit,
         offset_count: offset
       });
@@ -122,6 +131,18 @@ export class GalleryService {
     
     if (isFeatured !== undefined) {
       data = data.filter(template => template.is_featured === isFeatured);
+    }
+
+    // Filter for additional categories if it's an array with multiple items
+    if (Array.isArray(category) && category.length > 1) {
+      // Get templates that match any of the categories (OR logic)
+      data = data.filter(template => {
+        if (!template.categories || !Array.isArray(template.categories)) return false;
+        
+        // Check if any of the template's categories match any of the requested categories
+        const templateCategorySlugs = template.categories.map((cat: any) => cat.slug || '');
+        return category.some(slug => templateCategorySlugs.includes(slug));
+      });
     }
 
     // Convert the search results to AdTemplate format
@@ -353,10 +374,15 @@ export class GalleryService {
         templatesQuery = templatesQuery.eq('is_featured', isFeatured);
       }
       
-      // Filter by category if provided
+      // Filter by category if provided - now handling multiple categories with OR logic
       if (category) {
-        // We need to use the inner join we already set up with template_category_relationships
-        templatesQuery = templatesQuery.eq('template_category_relationships.category.slug', category);
+        if (Array.isArray(category) && category.length > 0) {
+          // When multiple categories are provided, use OR logic to match any of them
+          templatesQuery = templatesQuery.in('template_category_relationships.category.slug', category);
+        } else if (typeof category === 'string') {
+          // Single category case
+          templatesQuery = templatesQuery.eq('template_category_relationships.category.slug', category);
+        }
       }
       
       // Execute the query

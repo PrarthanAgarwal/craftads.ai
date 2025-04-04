@@ -3,15 +3,54 @@ import { GalleryService, TemplateSearchParams } from '@/services/gallery/gallery
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
+// Function to generate a deterministic hash from a string
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+// Fisher-Yates shuffle algorithm with seed
+function seedShuffle<T>(array: T[], seed: string): T[] {
+  const result = [...array];
+  const seedValue = hashString(seed);
+  let currentSeed = seedValue;
+  
+  // Seeded random number generator
+  const seededRandom = () => {
+    currentSeed = (currentSeed * 9301 + 49297) % 233280;
+    return currentSeed / 233280;
+  };
+  
+  for (let i = result.length - 1; i > 0; i--) {
+    // Use seeded random for consistent shuffle
+    const j = Math.floor(seededRandom() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  
+  return result;
+}
+
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const urlParams = url.searchParams;
     
     // Extract search parameters
+    const categoryParam = urlParams.get('category');
+    
+    // Parse multiple categories if present (comma-separated)
+    let categories: string[] | undefined;
+    if (categoryParam?.includes(',')) {
+      categories = categoryParam.split(',').filter(Boolean);
+    }
+    
     const templateParams: TemplateSearchParams = {
       query: urlParams.get('q') || undefined,
-      category: urlParams.get('category') || undefined,
+      category: categories || categoryParam || undefined,
       limit: urlParams.has('limit') ? parseInt(urlParams.get('limit') as string, 10) : 50,
       offset: urlParams.has('offset') ? parseInt(urlParams.get('offset') as string, 10) : 0,
       isPremium: urlParams.has('premium') 
@@ -22,8 +61,17 @@ export async function GET(req: NextRequest) {
         : undefined
     };
     
+    // Check for random ordering flag
+    const random = urlParams.get('random') === 'true';
+    const seed = urlParams.get('seed') || Date.now().toString();
+    
     // Use the modified method that doesn't rely on the stored procedure
-    const templates = await GalleryService.getTemplates(templateParams);
+    let templates = await GalleryService.getTemplates(templateParams);
+    
+    // Apply random ordering if requested
+    if (random) {
+      templates = seedShuffle(templates, seed);
+    }
     
     return NextResponse.json({
       success: true,
@@ -31,7 +79,8 @@ export async function GET(req: NextRequest) {
       meta: {
         count: templates.length,
         limit: templateParams.limit,
-        offset: templateParams.offset
+        offset: templateParams.offset,
+        seed: seed
       }
     });
   } catch (error: any) {

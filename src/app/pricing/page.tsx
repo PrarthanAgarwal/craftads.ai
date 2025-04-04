@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import ServerGalleryHeader from "@/components/gallery/ServerGalleryHeader";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "@phosphor-icons/react";
@@ -275,7 +275,7 @@ export default function PricingPage() {
     <main className="min-h-screen bg-app-background">
       <Sidebar />
       <div className={`${isMobile ? '' : 'ml-[240px]'}`}>
-        <Header />
+        <ServerGalleryHeader />
         <div className="pt-[70px] px-6 md:px-8">
           <div className="text-center max-w-3xl mx-auto py-12">
             <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>

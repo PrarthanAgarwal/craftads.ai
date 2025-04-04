@@ -41,7 +41,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { 
     icon: House, 
-    label: "Explore", 
+    label: "Home", 
     href: "/" 
   },
 ];
@@ -142,27 +142,28 @@ export default function Sidebar() {
           const Icon = item.icon;
           
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "w-full px-6 py-2.5 flex items-center gap-3 transition-colors",
-                isActive 
-                  ? "text-primary font-medium" 
-                  : "text-gray-800 hover:bg-gray-100"
-              )}
-            >
-              <Icon 
-                size={20} 
-                weight={isActive ? "fill" : "regular"} 
-              />
-              <span className={cn(
-                "font-normal text-sm",
-                isActive && "font-medium"
-              )}>
-                {item.label}
-              </span>
-            </Link>
+            <div className="px-6 py-1" key={item.href}>
+              <Link
+                href={item.href}
+                className={cn(
+                  "rounded-md px-3 py-2 flex items-center gap-3 transition-colors",
+                  isActive 
+                    ? "text-primary font-medium bg-gray-100" 
+                    : "text-gray-800 hover:bg-gray-200"
+                )}
+              >
+                <Icon 
+                  size={20} 
+                  weight={isActive ? "fill" : "regular"} 
+                />
+                <span className={cn(
+                  "font-normal text-sm",
+                  isActive && "font-medium"
+                )}>
+                  {item.label}
+                </span>
+              </Link>
+            </div>
           );
         })}
       </div>
@@ -310,7 +311,7 @@ export default function Sidebar() {
 
   // Desktop sidebar
   return (
-    <div className="fixed left-0 top-0 bottom-0 w-[240px] flex flex-col bg-white z-10">
+    <div className="fixed left-0 top-0 bottom-0 w-[240px] flex flex-col bg-white z-10 border-r border-gray-200">
       <div className="h-16 flex items-center">
         <Logo />
       </div>

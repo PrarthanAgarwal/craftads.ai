@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import ServerGalleryHeader from "@/components/gallery/ServerGalleryHeader";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -209,7 +209,7 @@ export default function GenerationsPage() {
     <main className="min-h-screen bg-app-background">
       <Sidebar />
       <div className={`${isMobile ? '' : 'ml-[240px]'}`}>
-        <Header />
+        <ServerGalleryHeader />
         <div className="pt-[70px] px-6 md:px-8">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 py-8">
             <div>
