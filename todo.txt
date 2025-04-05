@@ -1,9 +1,11 @@
 ✅ The header is different on all pages.
 ✅ The filter gets activated on searching.
 ✅ The filter gets applied directly on click and doesn't wait for apply.
-
-create and apply payments page
-create logo
-
-scrape and label images better
+✅ create logo
 ✅ Fix import via pinterest functionality
+
+add loading states through the app
+create and apply payments page
+scrape and label images better
+fix pinterest import functionality/make it to any link.
+add multi iteration support on already generated images (cost = 1 credit)

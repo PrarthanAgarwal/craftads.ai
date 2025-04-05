@@ -32,56 +32,50 @@ interface CreditPackage {
 // Fallback credit packages in case API fails
 const fallbackPricingPlans = [
   {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    description: "Perfect for getting started with basic ad creation",
+    name: "Starter Package",
+    price: "$14.99",
+    period: "monthly",
+    description: "Perfect for beginners",
     features: [
-      "5 AI generations per month",
-      "Basic ad templates",
-      "1 social media connection",
-      "Standard image resolution",
-      "Community support"
+      "100 AI generations",
+      "High-quality results",
+      "Access to all templates",
+      "Priority processing",
+      "Download in multiple formats"
     ],
-    buttonText: "Current Plan",
+    buttonText: "Buy 100 Credits",
     isPopular: false,
-    disabled: true
+    disabled: false
   },
   {
-    name: "Pro",
-    price: "$29",
-    period: "per month",
-    description: "For individuals and small businesses who need more power",
+    name: "Pro Package",
+    price: "$34.99",
+    period: "monthly",
+    description: "Best value for regular users",
     features: [
-      "50 AI generations per month",
-      "All premium templates",
-      "5 social media connections",
-      "High resolution exports",
-      "Priority support",
-      "Brand consistency tools",
-      "Advanced customization options"
+      "500 AI generations",
+      "High-quality results",
+      "Access to all templates",
+      "Priority processing",
+      "Download in multiple formats"
     ],
-    buttonText: "Upgrade to Pro",
+    buttonText: "Buy 500 Credits",
     isPopular: true,
     disabled: false
   },
   {
-    name: "Business",
-    price: "$99",
-    period: "per month",
-    description: "For teams and businesses with advanced needs",
+    name: "Business Package",
+    price: "$85.99",
+    period: "monthly",
+    description: "For businesses with higher volume needs",
     features: [
-      "Unlimited AI generations",
-      "All premium templates",
-      "Unlimited social media connections",
-      "Max resolution exports",
-      "Dedicated support",
-      "Brand management",
-      "Team collaboration",
-      "Advanced analytics",
-      "API access"
+      "1500 AI generations",
+      "High-quality results",
+      "Access to all templates",
+      "Priority processing",
+      "Download in multiple formats"
     ],
-    buttonText: "Upgrade to Business",
+    buttonText: "Buy 1500 Credits",
     isPopular: false,
     disabled: false
   }
@@ -255,7 +249,7 @@ export default function PricingPage() {
         id: pkg.id,
         name: pkg.name,
         price: `$${pkg.price}`,
-        period: pkg.name === 'Free' ? 'forever' : 'monthly',
+        period: 'monthly',
         description: pkg.description,
         creditAmount: pkg.credit_amount,
         features: [
@@ -265,9 +259,9 @@ export default function PricingPage() {
           "Priority processing",
           "Download in multiple formats"
         ],
-        buttonText: pkg.name === 'Free' ? 'Current Plan' : `Buy ${pkg.credit_amount} Credits`,
+        buttonText: `Buy ${pkg.credit_amount} Credits`,
         isPopular: pkg.is_featured,
-        disabled: pkg.name === 'Free'
+        disabled: false
       }))
     : fallbackPricingPlans;
 

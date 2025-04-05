@@ -12,11 +12,13 @@ import {
   User,
   Users,
   Coin,
-  Image,
+  Image as ImageIcon,
   SignOut,
   SignIn,
   CaretRight,
-  Receipt
+  Receipt,
+  Printer,
+  Bookmark
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
@@ -25,6 +27,7 @@ import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import {
   Popover,
   PopoverContent,
@@ -42,21 +45,21 @@ const navItems: NavItem[] = [
   { 
     icon: House, 
     label: "Home", 
-    href: "/" 
+    href: "/gallery" 
   },
 ];
 
 // Create section items
 const createItems: NavItem[] = [
   {
-    icon: Plus,
-    label: "New Print Ad",
-    href: "/new-ad"
-  },
-  {
     icon: Backpack,
     label: "Your Generations",
     href: "/generations"
+  },
+  {
+    icon: Bookmark,
+    label: "Bookmarks",
+    href: "/bookmarks"
   },
 ];
 
@@ -117,12 +120,17 @@ export default function Sidebar() {
 
   const Logo = () => (
     <div className="px-6">
-      <Link href="/">
+      <Link href="/gallery">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-md">
-            <Image size={18} weight="bold" />
+          <div className="w-7 h-7 relative flex-shrink-0">
+            <Image 
+              src="/logo.png" 
+              alt="CraftAds Logo" 
+              fill
+              className="object-contain"
+            />
           </div>
-          <span className="font-semibold text-black text-lg">CraftAds</span>
+          <span className="font-semibold text-black text-2xl">craftads</span>
         </div>
       </Link>
     </div>
@@ -132,8 +140,10 @@ export default function Sidebar() {
   const NavSection = ({ title, items }: { title: string, items: NavItem[] }) => (
     <div className="mb-6">
       {title && (
-        <div className="px-6 mb-2">
-          <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">{title}</span>
+        <div className="px-6 mb-1">
+          <span className="text-gray-400 text-sm font-bold normal-case">
+            {title}
+          </span>
         </div>
       )}
       <div className="w-full flex flex-col">
@@ -142,24 +152,21 @@ export default function Sidebar() {
           const Icon = item.icon;
           
           return (
-            <div className="px-6 py-1" key={item.href}>
+            <div className="py-0.5 px-2" key={item.href}>
               <Link
                 href={item.href}
                 className={cn(
-                  "rounded-md px-3 py-2 flex items-center gap-3 transition-colors",
+                  "rounded-md py-1.5 flex items-center gap-3 transition-colors px-4 font-medium",
                   isActive 
-                    ? "text-primary font-medium bg-gray-100" 
-                    : "text-gray-800 hover:bg-gray-200"
+                    ? "text-primary bg-gray-100" 
+                    : "text-gray-700 hover:bg-gray-200"
                 )}
               >
                 <Icon 
                   size={20} 
                   weight={isActive ? "fill" : "regular"} 
                 />
-                <span className={cn(
-                  "font-normal text-sm",
-                  isActive && "font-medium"
-                )}>
+                <span className="text-sm">
                   {item.label}
                 </span>
               </Link>
@@ -234,7 +241,7 @@ export default function Sidebar() {
     return (
       <Popover open={profileMenuOpen} onOpenChange={setProfileMenuOpen}>
         <PopoverTrigger asChild>
-          <div className="w-full px-6 py-4 cursor-pointer hover:bg-gray-50">
+          <div className="w-full px-6 py-5 cursor-pointer group">
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10 flex-shrink-0 border border-gray-200">
                 <AvatarFallback className="bg-primary/10 text-primary">
@@ -242,34 +249,34 @@ export default function Sidebar() {
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
-                <span className="font-medium text-sm truncate">{session.user?.name || "User"}</span>
+                <span className="text-sm truncate">{session.user?.name || "User"}</span>
                 <span className="text-xs text-gray-500 opacity-75 truncate">Free Plan</span>
               </div>
               <CaretRight 
                 size={16} 
-                className={`ml-auto text-gray-500 transition-transform ${profileMenuOpen ? 'rotate-90' : ''}`} 
+                className={`ml-auto transition-colors ${profileMenuOpen ? 'rotate-90 text-black' : 'text-gray-300 group-hover:text-black'}`} 
               />
             </div>
           </div>
         </PopoverTrigger>
         <PopoverContent className="w-56 p-0 rounded-md border shadow-md" align="end" side="top">
-          <div className="py-1">
-            <Link href="/account" className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 flex items-center gap-2">
+          <div className="py-1 px-2">
+            <Link href="/account" className="w-full rounded-md px-2 py-1.5 text-sm font-semibold hover:bg-gray-200 flex items-center gap-2 text-gray-700 transition-colors my-0.5">
               <User size={16} />
               <span>Account</span>
             </Link>
-            <Link href="/credits" className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 flex items-center gap-2">
+            <Link href="/credits" className="w-full rounded-md px-2 py-1.5 text-sm font-semibold hover:bg-gray-200 flex items-center gap-2 text-gray-700 transition-colors my-0.5">
               <Receipt size={16} />
               <span>Credits & Transactions</span>
             </Link>
-            <Link href="/pricing" className="w-full px-4 py-2 text-sm text-left hover:bg-gray-100 flex items-center gap-2">
+            <Link href="/pricing" className="w-full rounded-md px-2 py-1.5 text-sm font-semibold hover:bg-gray-200 flex items-center gap-2 text-gray-700 transition-colors my-0.5">
               <FileText size={16} />
               <span>Pricing Plans</span>
             </Link>
             <div className="border-t my-1"></div>
             <button 
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="w-full px-4 py-2 text-sm text-left text-red-500 hover:bg-gray-100 flex items-center gap-2"
+              className="w-full rounded-md px-2 py-1.5 text-sm font-semibold hover:bg-gray-200 flex items-center gap-2 text-red-500 transition-colors my-0.5"
             >
               <SignOut size={16} />
               <span>Logout</span>
@@ -279,6 +286,18 @@ export default function Sidebar() {
       </Popover>
     );
   };
+
+  // Print Ad Button component
+  const PrintAdButton = () => (
+    <div className="px-6 mb-4">
+      <Link href="/new-ad">
+        <Button className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl">
+          <Plus size={18} weight="bold" />
+          <span>New Print Ad</span>
+        </Button>
+      </Link>
+    </div>
+  );
 
   // Mobile sidebar
   if (isMobile) {
@@ -294,10 +313,13 @@ export default function Sidebar() {
             <SheetContent side="left" className="w-80 p-6 flex flex-col">
               <Logo />
               <div className="w-full h-px bg-gray-50 my-4"></div>
-              <div className="flex-1 flex flex-col overflow-y-auto mt-6">
+              <div className="flex-1 flex flex-col overflow-y-auto">
+                <div className="pt-6"></div>
                 <NavSection title="" items={navItems} />
-                <NavSection title="Create" items={createItems} />
-                <NavSection title="Integrations" items={integrationItems} />
+                <NavSection title="Library" items={createItems} />
+                <div className="mt-6 mb-4">
+                  <PrintAdButton />
+                </div>
                 <div className="flex-grow"></div>
                 {session && <CreditsCounter />}
               </div>
@@ -318,10 +340,16 @@ export default function Sidebar() {
       
       <div className="w-full h-px bg-gray-50"></div>
 
-      <div className="flex-1 flex flex-col overflow-y-auto mt-6">
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <div className="pt-10"></div>
         <NavSection title="" items={navItems} />
-        <NavSection title="Create" items={createItems} />
-        <NavSection title="Integrations" items={integrationItems} />
+        
+        <NavSection title="Library" items={createItems} />
+        
+        <div className="mt-6 mb-4">
+          <PrintAdButton />
+        </div>
+        
         <div className="flex-grow"></div>
         {session && <CreditsCounter />}
       </div>

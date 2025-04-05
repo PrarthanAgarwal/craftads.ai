@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CraftAds - Craft Beautiful Ads with AI",
-  description: "Create and craft beautiful ads for your business with CraftAds",
+  title: "craftads - Craft beautiful Ads with AI",
+  description: "Create and craft beautiful ads for your business with craftads",
 };
 
 export default function RootLayout({
