@@ -77,7 +77,6 @@ Now that the credit system is complete, focus on:
 
 - **Enhanced User Experience:**
   - 🔲 Implement saved generations with organization features
-  - 🔲 Add sharing and export functionality
   - 🔲 Create templates and favorites system
   - 🔲 Implement user preferences and settings
 

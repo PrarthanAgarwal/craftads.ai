@@ -124,7 +124,7 @@ export default function Sidebar() {
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 relative flex-shrink-0">
             <Image 
-              src="/logo.png" 
+              src="/logo.PNG" 
               alt="CraftAds Logo" 
               fill
               className="object-contain"
