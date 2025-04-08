@@ -127,20 +127,6 @@ CREATE INDEX IF NOT EXISTS generations_status_idx ON public.generations(status);
 CREATE INDEX IF NOT EXISTS generations_created_at_idx ON public.generations(created_at);
 CREATE INDEX IF NOT EXISTS generations_ai_model_idx ON public.generations(ai_model);
 
--- Bookmarks
-CREATE TABLE IF NOT EXISTS public.bookmarks (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
-    generation_id UUID NOT NULL REFERENCES public.generations(id) ON DELETE CASCADE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    notes TEXT,
-    tags TEXT[]
-);
-
-CREATE UNIQUE INDEX IF NOT EXISTS bookmarks_user_generation_idx ON public.bookmarks(user_id, generation_id);
-CREATE INDEX IF NOT EXISTS bookmarks_user_id_idx ON public.bookmarks(user_id);
-CREATE INDEX IF NOT EXISTS bookmarks_created_at_idx ON public.bookmarks(created_at);
-
 -- Session Handling trigger for auth events
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
@@ -229,7 +215,6 @@ ALTER TABLE public.credit_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.credit_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.generations ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.bookmarks ENABLE ROW LEVEL SECURITY;
 
 -- Users policies
 CREATE POLICY "Users can view their own data" ON public.users
@@ -263,19 +248,6 @@ CREATE POLICY "Users can view their own generations" ON public.generations
   
 CREATE POLICY "Users can create their own generations" ON public.generations
   FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- Bookmarks policies
-CREATE POLICY "Users can view their own bookmarks" ON public.bookmarks
-  FOR SELECT USING (auth.uid() = user_id);
-  
-CREATE POLICY "Users can create their own bookmarks" ON public.bookmarks
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can update their own bookmarks" ON public.bookmarks
-  FOR UPDATE USING (auth.uid() = user_id);
-  
-CREATE POLICY "Users can delete their own bookmarks" ON public.bookmarks
-  FOR DELETE USING (auth.uid() = user_id);
 
 -- Initial data for credit packages
 INSERT INTO public.credit_packages (name, description, credit_amount, price, is_active, is_featured, sort_order)

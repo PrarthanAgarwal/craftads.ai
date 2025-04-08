@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ChevronRight } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -34,18 +35,21 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Support
+                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors group flex items-center">
+                  <span>Support</span>
+                  <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Pricing
+                <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors group flex items-center">
+                  <span>Pricing</span>
+                  <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Blog
+                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors group flex items-center">
+                  <span>Blog</span>
+                  <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                 </Link>
               </li>
             </ul>
@@ -56,13 +60,15 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Terms of services
+                <Link href="/terms-of-service" className="text-muted-foreground hover:text-primary transition-colors group flex items-center">
+                  <span>Terms of Service</span>
+                  <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Privacy policy
+                <Link href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors group flex items-center">
+                  <span>Privacy Policy</span>
+                  <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                 </Link>
               </li>
             </ul>
