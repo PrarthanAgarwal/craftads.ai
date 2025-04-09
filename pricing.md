@@ -1,11 +1,9 @@
 Monthly Pricing
-
 - 100 credits for $15 (11.5)
 - 500 credits for $45 (27.5)
 - 1500 credits for $95 (42.5)
 
 Yearly Pricing (25% Off)
-
 - 100 credits for $11.25 (7.75)
 - 500 credits for $33.5 (16)
 - 1500 credits for $71.25 (18.75)

@@ -2,9 +2,13 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import ImageCard from "../ImageCard";
+import ColorSkeletonImage from "../ColorSkeletonImage";
 import { AdTemplate } from "@/services/gallery/galleryService";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, ImageIcon } from "lucide-react";
+import { extractDominantColor } from "@/lib/utils";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ImagePrefetcher from "./ImagePrefetcher";
 
 export default function ServerGalleryGrid() {
   const [columns, setColumns] = useState(4);
@@ -15,6 +19,7 @@ export default function ServerGalleryGrid() {
   const [page, setPage] = useState(1);
   const [initialLoad, setInitialLoad] = useState(true);
   const [randomSeed, setRandomSeed] = useState<string>("");
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const loadingRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -222,20 +227,46 @@ export default function ServerGalleryGrid() {
     return columnTemplates;
   };
 
+  // Extract all image URLs for prefetching
+  const allImageUrls = templates
+    .map(template => template?.preview_image_url)
+    .filter(Boolean) as string[];
+
   // Initial loading state
   if (loading && templates.length === 0) {
+    // Create dummy templates with placeholder URLs for skeleton loading
+    const dummyTemplates = Array.from({ length: columns * 3 }).map((_, index) => ({
+      id: `skeleton-${index}`,
+      title: "Loading...",
+      preview_image_url: `/api/gallery/templates/${index}`, // This URL won't actually load
+      width: 1,
+      height: 1
+    }));
+    
+    // Distribute dummy templates into columns
+    const columnTemplates: any[][] = Array.from({ length: columns }, () => []);
+    dummyTemplates.forEach((template, index) => {
+      const columnIndex = index % columns;
+      columnTemplates[columnIndex].push(template);
+    });
+    
     return (
       <div className="px-6 md:px-8 pb-20">
         <div className="grid gap-4 md:gap-6" style={{
           gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
         }}>
-          {Array.from({ length: columns }).map((_, columnIndex) => (
+          {columnTemplates.map((column, columnIndex) => (
             <div key={columnIndex} className="flex flex-col gap-4 md:gap-6">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="bg-gray-200 animate-pulse rounded-lg" style={{ 
-                  paddingBottom: '100%',
-                  position: 'relative'
-                }}></div>
+              {column.map((template) => (
+                <div key={template.id} className="rounded-lg overflow-hidden">
+                  <div 
+                    className="bg-gray-200 animate-pulse rounded-lg" 
+                    style={{ 
+                      paddingBottom: '100%',
+                      position: 'relative'
+                    }}
+                  ></div>
+                </div>
               ))}
             </div>
           ))}
@@ -275,46 +306,66 @@ export default function ServerGalleryGrid() {
   }
 
   return (
-    <div className="px-6 md:px-8 pb-20">
-      <div className="grid gap-4 md:gap-6" style={{
-        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
-      }}>
-        {getColumnTemplates().map((column, columnIndex) => (
-          <div key={columnIndex} className="flex flex-col gap-4 md:gap-6">
-            {column.map((template) => (
-              <div key={template?.id || Math.random().toString()}>
-                <ImageCard 
-                  src={template?.preview_image_url || '/placeholders/image-placeholder.jpg'} 
-                  alt={template?.title || 'Template image'} 
-                  aspectRatio={
-                    (template?.width && template?.height) 
-                      ? template.width / template.height 
-                      : 1
-                  }
-                />
+    <ImagePrefetcher imagesToPrefetch={allImageUrls}>
+      <>
+        <div className="px-6 md:px-8 pb-20">
+          <div className="grid gap-4 md:gap-6" style={{
+            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
+          }}>
+            {getColumnTemplates().map((column, columnIndex) => (
+              <div key={columnIndex} className="flex flex-col gap-4 md:gap-6">
+                {column.map((template) => (
+                  <div key={template?.id || Math.random().toString()}>
+                    <ColorSkeletonImage 
+                      src={template?.preview_image_url || '/placeholders/image-placeholder.jpg'} 
+                      alt={template?.title || 'Template image'} 
+                      aspectRatio={
+                        (template?.width && template?.height) 
+                          ? template.width / template.height 
+                          : 1
+                      }
+                      className="rounded-lg overflow-hidden transform transition-all duration-200 hover:shadow-xl"
+                      onClick={() => setSelectedTemplate(template?.id || null)}
+                    />
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        ))}
-      </div>
-      
-      {/* Loading indicator for infinite scroll */}
-      {hasMore && (
-        <div 
-          ref={loadingRef} 
-          className="flex justify-center items-center py-10"
-        >
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <span className="ml-2 text-gray-600">Loading more...</span>
+          
+          {/* Loading indicator for infinite scroll */}
+          {hasMore && (
+            <div 
+              ref={loadingRef} 
+              className="flex justify-center items-center py-10"
+            >
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <span className="ml-2 text-gray-600">Loading more...</span>
+            </div>
+          )}
+          
+          {/* End of content message */}
+          {!hasMore && templates.length > 0 && (
+            <div className="text-center py-10 text-gray-500">
+              You've reached the end of the gallery
+            </div>
+          )}
         </div>
-      )}
-      
-      {/* End of content message */}
-      {!hasMore && templates.length > 0 && (
-        <div className="text-center py-10 text-gray-500">
-          You've reached the end of the gallery
-        </div>
-      )}
-    </div>
+
+        {/* Template detail dialog */}
+        <Dialog open={!!selectedTemplate} onOpenChange={() => setSelectedTemplate(null)}>
+          <DialogContent className="max-w-4xl">
+            {selectedTemplate && (
+              <div className="p-4">
+                {/* Render template details here */}
+                <h2 className="text-xl font-bold">Template Details</h2>
+                <p>ID: {selectedTemplate}</p>
+                {/* Add more template details as needed */}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </>
+    </ImagePrefetcher>
   );
 } 

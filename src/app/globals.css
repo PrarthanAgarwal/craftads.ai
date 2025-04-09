@@ -11,24 +11,24 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     
-    /* Primary color: #27548A converted to HSL */
-    --primary: 212 56% 34%;
+    /* Primary color: #60B5FF */
+    --primary: 209 100% 69%;
     --primary-foreground: 0 0% 100%; /* white text on primary */
     
     /* Secondary color: light version of primary with 15% opacity */
-    --secondary: 212 56% 95%;
+    --secondary: 209 100% 95%;
     --secondary-foreground: 240 5.9% 10%;
     
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 212 56% 90%;
-    --accent-foreground: 212 56% 25%;
+    --accent: 209 100% 90%;
+    --accent-foreground: 209 100% 25%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 212 56% 34%; /* Same as primary */
+    --ring: 209 100% 69%; /* Same as primary */
     
     /* Background color changed from #F5F5F7 to white */
     --app-background: 0 0% 100%;
@@ -53,23 +53,23 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     
-    /* Primary color remains the same in dark mode */
-    --primary: 212 56% 34%;
+    /* Primary color: #60B5FF */
+    --primary: 209 100% 69%;
     --primary-foreground: 0 0% 98%; /* light text on primary in dark mode */
     
-    --secondary: 212 56% 20%;
+    --secondary: 209 100% 20%;
     --secondary-foreground: 0 0% 98%;
     
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 212 56% 25%;
-    --accent-foreground: 212 56% 90%;
+    --accent: 209 100% 25%;
+    --accent-foreground: 209 100% 90%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 212 56% 34%;
+    --ring: 209 100% 69%;
     
     --app-background: 240 10% 7%;
   }

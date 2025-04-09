@@ -4,10 +4,18 @@
 ✅ create logo
 ✅ Fix import via pinterest functionality
 ✅ scrape and label images better
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+Aaj ka agenda:
+- add loading states through the app
+- rls security on database
+- add captcha by cloudflare
+- smoother renders and components
+- look into MCP for supabase
 
-add loading states through the app
-create and apply payments page
-fix pinterest import functionality/make it to any link.
-add multi iteration support on already generated images (cost = 1 credit)
-landing page ko shaaeeee
-implement bookmarking of templates
+Debt:
+- create and apply payments page
+- fix pinterest import functionality/make it to any link.
+- add multi iteration support on already generated images (cost = 1 credit)
+- landing page ko shaaeeee
+- implement bookmarking of templates
