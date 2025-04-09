@@ -71,6 +71,12 @@ const Footer = () => {
                   <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
                 </Link>
               </li>
+              <li>
+                <Link href="/refund-policy" className="text-muted-foreground hover:text-primary transition-colors group flex items-center">
+                  <span>Refund Policy</span>
+                  <ChevronRight className="h-4 w-4 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
